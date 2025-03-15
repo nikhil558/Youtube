@@ -11,7 +11,7 @@ const Demo2 = () => {
    *
    * */
 
-  console.log("Rendering....");
+
 
   const i = useRef(null);
   // let i = {
@@ -31,7 +31,7 @@ const Demo2 = () => {
           className="bg-green-100 p-2 m-4"
           onClick={() => {
             x = x + 1;
-            console.log("x=" + x);
+          
           }}
         >
           Increase x
@@ -54,7 +54,7 @@ const Demo2 = () => {
           className="bg-green-100 p-2 m-4"
           onClick={() => {
             ref.current = ref.current + 1;
-            console.log("ref=", ref.current);
+      
           }}
         >
           Increase Ref

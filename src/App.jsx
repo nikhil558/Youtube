@@ -10,7 +10,7 @@ import WatchPage from './components/WatchPage'
 function App() {
   return (
     <Provider store={store}>
-    <div>
+    <div className='fixed'>
       <Head/>
       <BrowserRouter>
         <Routes>

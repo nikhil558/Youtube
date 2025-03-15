@@ -13,13 +13,13 @@ const WatchPage = () => {
     dispatch(closeMenu());
   }, []);
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full overflow-y-scroll h-[80vh]">
       <div className="px-5 flex w-full">
         <div className="">
           <iframe
             width="1000"
             height="650"
-            src={"https://www.youtube.com/embed/" + searchParams.get("v")}
+            src={"https://www.youtube.com/embed/" + searchParams.get("v") + "?autoplay=1"}
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

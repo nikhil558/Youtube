@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../utils/chatSlice";
 import { generateRandomName, makeRandomMessage } from "../utils/helper";
 import ChatMessage from "./ChatMessage";
+import { PROFILE_ICON_URLS } from "../utils/contants";
 
 const LiveChat = () => {
   const [liveMessage, setLiveMessage] = useState("");
@@ -18,6 +19,7 @@ const LiveChat = () => {
         addMessage({
           name: generateRandomName(),
           message: makeRandomMessage(20) + " 🚀",
+          usericon: PROFILE_ICON_URLS()
         })
       );
     }, 2000);
@@ -32,7 +34,7 @@ const LiveChat = () => {
           {
             // Disclaimer: Don't use indexes as keys
             chatMessages.map((c, i) => (
-              <ChatMessage key={i} name={c.name} message={c.message} />
+              <ChatMessage key={i} name={c.name} message={c.message} usericon={c.usericon}/>
             ))
           }
         </div>
@@ -47,6 +49,7 @@ const LiveChat = () => {
             addMessage({
               name: "Nikhil",
               message: liveMessage,
+              usericon: PROFILE_ICON_URLS()
             })
           );
           setLiveMessage("");

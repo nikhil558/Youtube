@@ -1,0 +1,34 @@
+import { createSlice } from "@reduxjs/toolkit";
+
+
+const videoSlice = createSlice({
+    name: "video",
+    initialState:{
+        searchInput:null,
+        fetchInput:"",
+        resultsVideos:[]
+    },
+    reducers:{
+        userSearch: (state, action) => {
+            state.searchInput=action.payload
+        },
+        userSearchResults: (state, action) => {
+            state.resultsVideos = action.payload
+        },
+
+        loadMoreVideos: (state, action) => {
+            if (Array.isArray(action.payload)){
+                state.resultsVideos= [...state.resultsVideos,...action.payload]
+            }else{
+                console.log("action.payload is not a array", action.payload)
+            }
+            
+        },
+        updateFetchInput: (state, action) => {
+            state.fetchInput = action.payload
+        }
+    }
+})
+
+export const {userSearch, userSearchResults, loadMoreVideos, updateFetchInput} = videoSlice.actions
+export default videoSlice.reducer

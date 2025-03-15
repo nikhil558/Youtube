@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_API } from "../utils/contants";
 import { cacheResults } from "../utils/searchSlice";
+import { userSearch } from "../utils/videoSlice";
 
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -61,16 +62,36 @@ const Head = () => {
       e.preventDefault();
       const nextIndex = (focusedSuggestionIndex + 1) % suggestions.length;
       setFocusedSuggestionIndex(nextIndex);
-      console.log(suggestionsRef.current)
       suggestionsRef.current[nextIndex]?.focus();
     } else if (e.key === "ArrowUp" && suggestions.length > 0) {
       e.preventDefault();
       const prevIndex = (focusedSuggestionIndex - 1 + suggestions.length) % suggestions.length;
       setFocusedSuggestionIndex(prevIndex);
       suggestionsRef.current[prevIndex]?.focus();
+    }else if (e.key === "Enter") {
+      if (focusedSuggestionIndex >= 0) {
+        setSearchQuery(suggestions[focusedSuggestionIndex]);
+        setShowSuggestions(false);
+        dispatch(userSearch(suggestions[focusedSuggestionIndex]));
+      } else {
+        dispatch(userSearch(searchQuery));
+      }
     }
   };
 
+  const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion);
+    setShowSuggestions(false);
+    dispatch(userSearch(suggestion));
+  };
+
+  const handleBlur = (e) => {
+    setTimeout(() => {
+      if (!suggestionsRef.current.includes(document.activeElement)) {
+        setShowSuggestions(false);
+      }
+    }, 100);
+  }
   return (
     <div className="grid grid-flow-col p-5 m-2 shadow-lg">
       <div className="flex col-span-1">
@@ -96,7 +117,7 @@ const Head = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setShowSuggestions(true)}
-            onBlur={() => setShowSuggestions(false)}
+            onBlur={handleBlur}
             onKeyDown={(e) => {
               handleKeyDown(e)
               setShowSuggestions(true)
@@ -111,7 +132,7 @@ const Head = () => {
           <div className="fixed bg-white py-2 px-2 w-[37rem] shadow-lg rounded-lg border border-gray-100">
             <ul>
               {suggestions.map((s, index) => (
-                <li key={s} className="py-2 px-3 shadow-sm hover:bg-gray-100" tabIndex={0} ref={(el) =>  suggestionsRef.current[index]=el} onKeyDown={handleKeyDown}>
+                <li key={s} className="py-2 px-3 shadow-sm hover:bg-gray-100" tabIndex={0} onClick={() => handleSuggestionClick(s)} ref={(el) =>  suggestionsRef.current[index]=el} onKeyDown={handleKeyDown}>
                   🔍 {s}
                 </li>
               ))}
